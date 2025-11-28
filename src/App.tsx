@@ -22,7 +22,7 @@ function App() {
 
   return (
     <>
-      <h1>Notifications Count = {count}</h1>
+      <h1>Notifications Count: {count}</h1>
       <div className="card">
         <button onClick={() => dispatch(increment())}>
           Increment
