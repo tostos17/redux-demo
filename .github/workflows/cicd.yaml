@@ -1,0 +1,32 @@
+name: redux-demo-pipeline
+on: 
+  push:
+    branches: 
+      - dev
+
+jobs: 
+  build: 
+    runs-on: ubuntu-latest
+    steps: 
+      - name: Checkout source
+        uses: actions/checkout@v3
+      - name: Login to docker hub
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} 
+      - name: Build docker image
+        run: docker build -t tostos/redux-demo .
+      - name: Publish to dockerhub
+        run: docker push tostos/redux-demo:latest
+
+  deploy: 
+    needs: build
+    runs-on: aws-ec2
+    steps: 
+      - name: Pull Image from Dockerhub
+        run: docker pull tostos/redux-demo:latest 
+      - name: Delete old container
+        run: docker rm -f redux-demo-box
+      - name: Run docker container 
+        run: docker run -dp 3000:80 --name redux-demo-box tostos/redux-demo
+
+
+
