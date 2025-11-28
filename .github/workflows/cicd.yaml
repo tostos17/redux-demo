@@ -2,7 +2,7 @@ name: redux-demo-pipeline
 on: 
   push:
     branches: 
-      - dev
+      - master
 
 jobs: 
   build: 
